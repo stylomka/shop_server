@@ -4,6 +4,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { tr } from '@faker-js/faker';
+const cors = require('cors');
+const express = require('express');
+const app = express();
+
+const corsOptions = {
+  origin: 'https://shop-client-de4f.onrender.com'  // Разрешите только запросы с этого источника
+};
+
+app.use(cors(corsOptions));
+
+// Остальная часть вашего кода сервера
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,3 +40,5 @@ async function bootstrap() {
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
+
+
