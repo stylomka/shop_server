@@ -1,44 +1,36 @@
+import * as session from 'express-session';
+import * as passport from 'passport';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SwaggerConfig } from './swagger.config';
-import * as session from 'express-session';
-import * as passport from 'passport';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import { tr } from '@faker-js/faker';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  // Настройка CORS
-  app.enableCors({
-    origin: 'https://shop-client-de4f.onrender.com',
-    credentials: true, // если нужны cookies/Credentials
-  });
-
-  // Настройка сессий и Passport
-  app.use(session({
-    secret: 'keyword',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: true, // если вы используете HTTPS
-      maxAge: 86400000 // 24 часа
-    }
-  }));
+  const app = await NestFactory.create(AppModule);
+  app.use(
+    session({
+      secret: 'keyword',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // Настройка Swagger
+  app.enableCors({
+    credentials: true,
+    origin: ['http://localhost:3001/', 'https://shop-client-de4f.onrender.com/'],
+  });
+
   const config = new DocumentBuilder()
-    .setTitle('API Documentation')
-    .setDescription('API description')
-    .setVersion('1.0')
-    .addTag('api')
-    .build();
+  .setTitle('Над сервером работал Емиж Алан')
+  .setDescription('api documentation')
+  .setVersion('1.0')
+  .addTag('api')
+  .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(process.env.PORT || 3000);
 }
-
 bootstrap();
