@@ -19,7 +19,7 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: ['http://localhost:3001', 'https://shop-client-de4f.onrender.com/'],
+    origin: ['https://shop-client-de4f.onrender.com/'],
   });
 
   const config = new DocumentBuilder()
