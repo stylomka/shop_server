@@ -17,11 +17,6 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.enableCors({
-    credentials: true,
-    origin: ['https://shop-client-de4f.onrender.com/'],
-  });
-
   const config = new DocumentBuilder()
   .setTitle('Над сервером работал Емиж Алан')
   .setDescription('api documentation')
